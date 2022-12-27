@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.util.*;
 
 public class PuzzleInstallBlackStone extends JPanel {
-	static final int EMPTY = 0, BATSU = 1, MARU = 2;
+	static final int EMPTY = 0;
     static final int BLACKSTONE = 1;
 	static final int YMAX = 8, XMAX = 8;
 	ArrayList<Figure> figs = new ArrayList<Figure>();
-	boolean turn = true;
-	int winner = EMPTY;
+    int blackStoneNumber = 0;
+    boolean finish = false;
 	int[][] board = new int[YMAX][XMAX];
 	Text t1 = new Text(20, 20, "黒石をおいてください", new Font("Serif", Font.BOLD, 22));
 
@@ -23,7 +23,7 @@ public class PuzzleInstallBlackStone extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				Rect r = pick(evt.getX(), evt.getY());
-				if (r == null || winner != EMPTY) {
+				if (r == null || finish) {
 					return;
 				}
 				int x = (r.getX() - 80) / 20, y = (r.getY() - 40) / 20;
@@ -39,7 +39,12 @@ public class PuzzleInstallBlackStone extends JPanel {
                     t1.setText("成功！！");
                     figs.add(new BlackStone(r.getX(), r.getY(), 8));
                     board[y][x] = BLACKSTONE;
+                    blackStoneNumber++;
 				}
+                if (blackStoneNumber == 8) {
+                    t1.setText("終了！！");
+                    finish = true;
+                }
 				repaint();
 			}
 		});
