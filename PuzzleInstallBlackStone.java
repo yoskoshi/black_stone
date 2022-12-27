@@ -5,6 +5,7 @@ import java.util.*;
 
 public class PuzzleInstallBlackStone extends JPanel {
 	static final int EMPTY = 0, BATSU = 1, MARU = 2;
+    static final int BLACKSTONE = 1;
 	static final int YMAX = 8, XMAX = 8;
 	ArrayList<Figure> figs = new ArrayList<Figure>();
 	boolean turn = true;
@@ -31,13 +32,8 @@ public class PuzzleInstallBlackStone extends JPanel {
 					repaint();
 					return;
 				}
-				if (turn) {
-					figs.add(new Batsu(r.getX(), r.getY(), 8));
-					board[y][x] = BATSU;
-				} else {
-					figs.add(new Maru(r.getX(), r.getY(), 8));
-					board[y][x] = MARU;
-				}
+				figs.add(new BlackStone(r.getX(), r.getY(), 8));
+                board[y][x] = BLACKSTONE;
 				int a = ck(x, y, 1, 1), b = ck(x, y, 1, -1), c = ck(x, y, 1, 0), d = ck(x, y, 0, 1);
 				if (a > 4 || b > 4 || c > 4 || d > 4) {
 					t1.setText((turn ? "×" : "○") + "の勝利！");
@@ -117,38 +113,20 @@ public class PuzzleInstallBlackStone extends JPanel {
 		}
 	}
 
-	static class Maru implements Figure {
-		int xpos, ypos, size;
+    static class BlackStone implements Figure {
+        int xpos, ypos, size;
 
-		public Maru(int x, int y, int s) {
-			xpos = x;
-			ypos = y;
-			size = s;
-		}
+        public BlackStone(int x, int y, int s) {
+            xpos = x;
+            ypos = y;
+            size = s;
+        }
 
-		public void draw(Graphics g) {
-			g.setColor(Color.BLACK);
-			((Graphics2D) g).setStroke(new BasicStroke(4));
-			g.drawOval(xpos - size, ypos - size, 2 * size, 2 * size);
-		}
-	}
-
-	static class Batsu implements Figure {
-		int xpos, ypos, size;
-
-		public Batsu(int x, int y, int s) {
-			xpos = x;
-			ypos = y;
-			size = s;
-		}
-
-		public void draw(Graphics g) {
-			g.setColor(Color.BLACK);
-			((Graphics2D) g).setStroke(new BasicStroke(4));
-			g.drawLine(xpos - size, ypos - size, xpos + size, ypos + size);
-			g.drawLine(xpos - size, ypos + size, xpos + size, ypos - size);
-		}
-	}
+        public void draw(Graphics g) {
+            g.setColor(Color.BLACK);
+            g.fillOval(xpos - size, ypos - size, 2 * size, 2 * size);
+        }
+    }
 
 	static class Rect implements Figure {
 		Color col;
