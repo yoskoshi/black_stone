@@ -11,7 +11,7 @@ public class PuzzleInstallBlackStone extends JPanel {
 	boolean turn = true;
 	int winner = EMPTY;
 	int[][] board = new int[YMAX][XMAX];
-	Text t1 = new Text(20, 20, "五目並べ、次の手番：×", new Font("Serif", Font.BOLD, 22));
+	Text t1 = new Text(20, 20, "黒石をおいてください", new Font("Serif", Font.BOLD, 22));
 
 	public PuzzleInstallBlackStone() {
 		figs.add(t1);
@@ -32,15 +32,13 @@ public class PuzzleInstallBlackStone extends JPanel {
 					repaint();
 					return;
 				}
-				figs.add(new BlackStone(r.getX(), r.getY(), 8));
-                board[y][x] = BLACKSTONE;
 				int a = ck(x, y, 1, 1), b = ck(x, y, 1, -1), c = ck(x, y, 1, 0), d = ck(x, y, 0, 1);
-				if (a > 4 || b > 4 || c > 4 || d > 4) {
-					t1.setText((turn ? "×" : "○") + "の勝利！");
-					winner = turn ? BATSU : MARU;
+				if (a > 1 || b > 1 || c > 1 || d > 1) {
+					t1.setText("縦横斜めに既に黒石が存在するので、置けません。");
 				} else {
-					turn = !turn;
-					t1.setText("次の手番：" + (turn ? "×" : "○"));
+                    t1.setText("成功！！");
+                    figs.add(new BlackStone(r.getX(), r.getY(), 8));
+                    board[y][x] = BLACKSTONE;
 				}
 				repaint();
 			}
@@ -64,12 +62,16 @@ public class PuzzleInstallBlackStone extends JPanel {
 	}
 
 	private int ck(int x, int y, int dx, int dy) {
-		int s = board[y][x], count = 1;
-		for (int i = 1; ck1(x + dx * i, y + dy * i, s); ++i) {
-			++count;
+		int s = BLACKSTONE, count = 1;
+		for (int i = 1; i < 8; ++i) {
+            if (ck1(x + dx * i, y + dy * i, s)) {
+			    ++count;
+            }
 		}
-		for (int i = 1; ck1(x - dx * i, y - dy * i, s); ++i) {
-			++count;
+		for (int i = 1; i < 8; ++i) {
+            if (ck1(x - dx * i, y - dy * i, s)) {
+			    ++count;
+            }
 		}
 		return count;
 	}
