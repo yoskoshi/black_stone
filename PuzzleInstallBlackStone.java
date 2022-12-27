@@ -5,7 +5,7 @@ import java.util.*;
 
 public class PuzzleInstallBlackStone extends JPanel {
 	static final int EMPTY = 0, BATSU = 1, MARU = 2;
-	static final int YMAX = 10, XMAX = 16;
+	static final int YMAX = 8, XMAX = 8;
 	ArrayList<Figure> figs = new ArrayList<Figure>();
 	boolean turn = true;
 	int winner = EMPTY;
@@ -16,7 +16,7 @@ public class PuzzleInstallBlackStone extends JPanel {
 		figs.add(t1);
 		for (int i = 0; i < YMAX * XMAX; ++i) {
 			int r = i / YMAX, c = i % YMAX;
-			figs.add(new Rect(Color.PINK, 80 + r * 20, 40 + c * 20, 18, 18));
+			figs.add(new Rect(Color.GREEN, 80 + r * 20, 40 + c * 20, 18, 18));
 		}
 		setOpaque(false);
 		addMouseListener(new MouseAdapter() {
