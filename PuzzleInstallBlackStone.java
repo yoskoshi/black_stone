@@ -1,7 +1,7 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import java.util.Timer;
 
 public class PuzzleInstallBlackStone extends JPanel {
 	static final int EMPTY = 0;
@@ -9,7 +9,6 @@ public class PuzzleInstallBlackStone extends JPanel {
 	static final int YMAX = 8, XMAX = 8;
 	ArrayList<Figure> figs = new ArrayList<Figure>();
     int blackStoneNumber = 0;
-    boolean finish = false;
 	int[][] board = new int[YMAX][XMAX];
 	Text t1 = new Text(20, 20, "黒石をおいてください", new Font("Serif", Font.BOLD, 22));
 
@@ -20,13 +19,14 @@ public class PuzzleInstallBlackStone extends JPanel {
 			figs.add(new Rect(Color.GREEN, 80 + r * 20, 40 + c * 20, 18, 18));
 		}
 		setOpaque(false);
-		addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
-				Rect r = pick(evt.getX(), evt.getY());
-				if (r == null || finish) {
-					return;
-				}
-				int x = (r.getX() - 80) / 20, y = (r.getY() - 40) / 20;
+        Timer timer = new Timer(false);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                int min = 0;
+                int max = 7;
+                int x = (int) (Math.random()*(max - min)) + min;
+                int y = (int) (Math.random()*(max - min)) + min;
 				if (board[y][x] != EMPTY) {
 					t1.setText("空いていません");
 					repaint();
@@ -37,17 +37,18 @@ public class PuzzleInstallBlackStone extends JPanel {
 					t1.setText("縦横斜めに既に黒石が存在するので、置けません。");
 				} else {
                     t1.setText("成功！！");
-                    figs.add(new BlackStone(r.getX(), r.getY(), 8));
+                    figs.add(new BlackStone(80 + x * 20, 40 + y * 20, 8));
                     board[y][x] = BLACKSTONE;
                     blackStoneNumber++;
 				}
                 if (blackStoneNumber == 8) {
                     t1.setText("終了！！");
-                    finish = true;
+                    timer.cancel();
                 }
 				repaint();
-			}
-		});
+            }
+        };
+        timer.schedule(task, 2000, 1000);
 	}
 
 	public Rect pick(int x, int y) {
