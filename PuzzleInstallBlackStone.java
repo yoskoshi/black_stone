@@ -127,11 +127,6 @@ public class PuzzleInstallBlackStone extends JPanel {
 		}
     }
 
-    public void removeBackMostIndex(int index) {
-        board_row[index] = null;
-        board_column[index] = null;
-    }
-
 	public void paintComponent(Graphics g) {
 		for (Figure f : figs) {
 			f.draw(g);
