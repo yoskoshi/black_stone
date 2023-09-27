@@ -15,6 +15,7 @@ public class PuzzleInstallBlackStone extends JPanel {
     int[][] board_row = new int[92][8];
     int[][] board_column = new int[92][8];
     int board_index = 0;
+	int time = 0;
 	Text t1 = new Text(20, 20, "黒石をおいてください", new Font("Serif", Font.BOLD, 22));
 
 	public PuzzleInstallBlackStone() {
